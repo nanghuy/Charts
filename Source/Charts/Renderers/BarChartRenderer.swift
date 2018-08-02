@@ -273,7 +273,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         let borderWidth = dataSet.barBorderWidth
         let borderColor = dataSet.barBorderColor
         let drawBorder = borderWidth > 0.0
-        
+        let drawConnerRadius = dataSet.isConnerRadius
         context.saveGState()
         
         // draw the bar shadow before the values
@@ -369,7 +369,30 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 context.setFillColor(dataSet.color(atIndex: j).cgColor)
             }
             
-            context.fill(barRect)
+            if drawConnerRadius {
+                
+                let startAngle: CGFloat = 0
+                let endAngle = -CGFloat.pi
+                var centerPoint = CGPoint(x: barRect.origin.x + barRect.width/2, y: barRect.origin.y + barRect.width/2)
+                let pathTop = UIBezierPath(arcCenter:centerPoint, radius: barRect.width/2, startAngle: startAngle, endAngle:endAngle, clockwise: false)
+                let pathMidle = UIBezierPath(rect: CGRect(x: barRect.origin.x,
+                                                          y: barRect.origin.y + barRect.width/2,
+                                                          width: barRect.width,
+                                                          height: barRect.height - barRect.width))
+                centerPoint = CGPoint(x: barRect.origin.x + barRect.width/2, y: (barRect.origin.y + barRect.height) - barRect.width/2)
+                let pathBot = UIBezierPath(arcCenter:centerPoint, radius: barRect.width/2, startAngle: startAngle, endAngle:endAngle, clockwise: true)
+                let shapeLayerPath = UIBezierPath()
+                shapeLayerPath.append(pathTop)
+                shapeLayerPath.append(pathMidle)
+                shapeLayerPath.append(pathBot)
+                
+                context.addPath(shapeLayerPath.cgPath)
+                
+                context.fillPath()
+
+            } else {
+                context.fill(barRect)
+            }
             
             if drawBorder
             {

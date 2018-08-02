@@ -128,7 +128,7 @@ class BarChartViewController: DemoBaseViewController {
             set1 = BarChartDataSet(values: yVals, label: "The year 2017")
             set1.colors = ChartColorTemplates.material()
             set1.drawValuesEnabled = false
-            
+            set1.isConnerRadius = true
             let data = BarChartData(dataSet: set1)
             data.setValueFont(UIFont(name: "HelveticaNeue-Light", size: 10)!)
             data.barWidth = 0.9

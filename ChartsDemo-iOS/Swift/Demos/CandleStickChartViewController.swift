@@ -84,7 +84,12 @@ class CandleStickChartViewController: DemoBaseViewController {
             let close = Double(arc4random_uniform(6) + 1)
             let even = i % 2 == 0
             
-            return CandleChartDataEntry(x: Double(i), shadowH: val + high, shadowL: val - low, open: even ? val + open : val - open, close: even ? val - close : val + close, icon: UIImage(named: "icon")!)
+            return CandleChartDataEntry(x: Double(i),
+                                        shadowH: val + high,
+                                        shadowL: val - low,
+                                        open: even ? val + open : val - open,
+                                        close: even ? val - close : val + close,
+                                        icon: UIImage(named: "icon")!)
         }
         
         let set1 = CandleChartDataSet(values: yVals1, label: "Data Set")
